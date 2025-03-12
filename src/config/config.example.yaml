@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+database:
+  host: "localhost"
+  port: 5432
+  user: "your_username" # Edit this section
+  password: "your_password" # Edit this section
+  dbname: "your_db" # Edit this section
+  sslmode: "disable"
+
+jwt:
+  secret: "your_secret_jwt" # Edit this section

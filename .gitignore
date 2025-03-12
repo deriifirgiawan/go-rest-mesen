@@ -1,0 +1,44 @@
+# Binaries & Build Files
+/bin/
+/vendor/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go Modules & Dependencies
+go.sum
+go.mod
+
+# Logs & Debug Files
+*.log
+*.trace
+*.prof
+*.dump
+
+# Configuration & Secrets
+config.yaml
+.env
+.env.local
+.env.*.local
+*.secret
+*.key
+*.pem
+
+# Swagger Docs (Optional: jika ingin dibuat ulang setiap kali)
+docs/swagger.json
+docs/swagger.yaml
+
+# IDE & Editor Settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+
+# OS-Specific Files
+.DS_Store
+Thumbs.db
