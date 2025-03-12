@@ -1,8 +1,8 @@
-package controllers
+package product
 
 import (
 	"rest-app-pos/src/dto"
-	"rest-app-pos/src/services"
+	"rest-app-pos/src/modules/product/services"
 	"rest-app-pos/src/utils"
 
 	"net/http"

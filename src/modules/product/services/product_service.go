@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"rest-app-pos/src/dto"
 	"rest-app-pos/src/models"
-	"rest-app-pos/src/repository"
+	merchant "rest-app-pos/src/modules/merchant/repository"
+	"rest-app-pos/src/modules/product/repository"
 	"strconv"
 )
 
@@ -24,9 +25,9 @@ func NewProductService(repo repository.ProductRepository) ProductService {
 
 func (s *productService) InsertProduct(payload dto.ProductRequestDto, user_id uint) error {
 	num, _ := strconv.ParseFloat(payload.Price, 64)
-	merchantRepository := repository.NewMerchantRepository()
+	merchantRepository := repository.NewProductRepository()
 
-	merchant, _ := merchantRepository.FindByUserId(user_id)
+	merchant, _ := merchantRepository.FindProductById(user_id)
 	product := &models.Product{
 		Name: payload.Name,
 		Description: payload.Description,
@@ -45,13 +46,13 @@ func (s *productService) UpdateProduct(payload dto.ProductRequestDto, user_id ui
 		return err
 	}
 	num, _ := strconv.ParseFloat(payload.Price, 64)
-	merchantRepository := repository.NewMerchantRepository()
+	merchantRepository := merchant.NewMerchantRepository()
 
-	merchant, _ := merchantRepository.FindByUserId(user_id)
+	merchants, _ := merchantRepository.FindByUserId(user_id)
 	product := &models.Product{
 		Name: payload.Name,
 		Description: payload.Description,
-		MerchantID: merchant.ID,
+		MerchantID: merchants.ID,
 		CategoryID: uint(payload.CategoryID),
 		Price: num,
 	}
@@ -61,15 +62,15 @@ func (s *productService) UpdateProduct(payload dto.ProductRequestDto, user_id ui
 
 
 func (s *productService) DeleteProduct(id uint, user_id uint) error {
-	merchantRepository := repository.NewMerchantRepository()
+	merchantRepository := merchant.NewMerchantRepository()
 
-	merchant, _ := merchantRepository.FindByUserId(user_id)
+	merchants, _ := merchantRepository.FindByUserId(user_id)
 	product, err := s.repo.FindProductById(id)
 	if err != nil {
 		return err
 	}
 
-	if product.MerchantID != merchant.ID {
+	if product.MerchantID != merchants.ID {
 		return fmt.Errorf("unauthorized: you don't have permission to delete this product")
 	}
 

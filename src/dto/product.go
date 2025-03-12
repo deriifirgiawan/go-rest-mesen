@@ -5,4 +5,5 @@ type ProductRequestDto struct {
 	Description string `json:"description"`
 	Price string `json:"price" binding:"required"`
 	CategoryID int `json:"category_id" binding:"required"`
+	Quantity uint `json:"quantity" binding:"required"`
 }

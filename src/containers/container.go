@@ -2,16 +2,19 @@ package containers
 
 import (
 	"rest-app-pos/src/config"
-	"rest-app-pos/src/controllers"
 	"rest-app-pos/src/database"
-	"rest-app-pos/src/repository"
-	"rest-app-pos/src/services"
+	auth "rest-app-pos/src/modules/auth/controllers"
+	product "rest-app-pos/src/modules/product/controllers"
+	productRepository "rest-app-pos/src/modules/product/repository"
+	"rest-app-pos/src/modules/product/services"
+	globalRepository "rest-app-pos/src/repository"
+	globalService "rest-app-pos/src/services"
 )
 
 
 type AppContainer struct {
-	AuthController *controllers.AuthController
-	ProductController *controllers.ProductController
+	AuthController *auth.AuthController
+	ProductController *product.ProductController
 }
 
 func InitAppDependencies() *AppContainer {
@@ -25,14 +28,14 @@ func InitAppDependencies() *AppContainer {
 	database.SeedRoles()
 	database.SeedCategories()
 
-	userRepo := repository.NewUserRepository()
-	userService := services.NewUserService(userRepo)
-	authController := controllers.NewAuthController(userService)
+	userRepo := globalRepository.NewUserRepository()
+	userService := globalService.NewUserService(userRepo)
+	authController := auth.NewAuthController(userService)
 
 
-	productRepo := repository.NewProductRepository()
+	productRepo := productRepository.NewProductRepository()
 	productService := services.NewProductService(productRepo)
-	productController := controllers.NewProductController(productService)
+	productController := product.NewProductController(productService)
 
 	return &AppContainer{
 		AuthController: authController,
