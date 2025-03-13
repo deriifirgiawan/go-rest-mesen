@@ -46,7 +46,9 @@ func RoleProtectMiddleware(role_id uint) gin.HandlerFunc {
 		}
 
 		claims := token.Claims.(jwt.MapClaims)
-		roleID := claims["role"].(uint)
+		roleFloat := claims["role"].(float64)
+
+		roleID := uint(roleFloat)
 
 		if roleID != role_id {
 			response := dto.ErrorResponse(http.StatusUnauthorized, "Invalid or expired token")

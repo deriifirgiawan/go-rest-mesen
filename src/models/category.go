@@ -1,10 +1,16 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Category struct {
-	gorm.Model
-	ID uint `json:"primaryKey"`
+	ID uint `json:"id" gorm:"primaryKey"`
 	Name string `json:"name" gorm:"type:varchar(255);not null"`
-	Products []Product `json:"products" gorm:"foreignKey:CategoryID"`
+	Products []*Product `json:"products,omitempty" gorm:"foreignKey:CategoryID"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt time.Time  `json:"updated_at"`
+	DeletedAt gorm.DeletedAt `json:"-" gorm:"index"`
 }
