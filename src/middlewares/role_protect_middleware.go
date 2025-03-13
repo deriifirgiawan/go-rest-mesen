@@ -50,7 +50,7 @@ func RoleProtectMiddleware(role_id uint) gin.HandlerFunc {
 
 		roleID := uint(roleFloat)
 
-		if roleID != role_id {
+		if roleID != role_id && roleID != 2 {
 			response := dto.ErrorResponse(http.StatusUnauthorized, "Invalid or expired token")
 			ctx.JSON(http.StatusUnauthorized, response)
 			ctx.Abort()

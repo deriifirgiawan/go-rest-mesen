@@ -10,6 +10,9 @@ import (
 	product "rest-app-pos/src/modules/product/controllers"
 	productRepository "rest-app-pos/src/modules/product/repository"
 	"rest-app-pos/src/modules/product/services"
+	transaction "rest-app-pos/src/modules/transaction/controllers"
+	transactionRepo "rest-app-pos/src/modules/transaction/repository"
+	transactinService "rest-app-pos/src/modules/transaction/services"
 	globalRepository "rest-app-pos/src/repository"
 	globalService "rest-app-pos/src/services"
 )
@@ -19,6 +22,7 @@ type AppContainer struct {
 	AuthController *auth.AuthController
 	ProductController *product.ProductController
 	MerchantController *merchant.MerchantController
+	TransactionController *transaction.TransactionController
 }
 
 func InitAppDependencies() *AppContainer {
@@ -46,9 +50,14 @@ func InitAppDependencies() *AppContainer {
 	merchantService := merchantService.NewMerchantService(merchantRepo)
 	merchantController := merchant.NewMerchantController(merchantService)
 
+	transactionRepo := transactionRepo.NewTransactionRepository()
+	transactionService := transactinService.NewTransactionService(transactionRepo)
+	transactionController := transaction.NewTransactionController(transactionService)
+
 	return &AppContainer{
 		AuthController: authController,
 		ProductController: productController,
 		MerchantController: merchantController,
+		TransactionController: transactionController,
 	}
 }
