@@ -8,6 +8,8 @@ import (
 type MerchantRepository interface {
 	FindById(id uint) (*models.Merchant, error)
 	FindByUserId(UserID uint) (*models.Merchant, error)
+	Create(merchant *models.Merchant) error
+	Update(merchant *models.Merchant, user_id uint) error
 }
 
 type merchantRepository struct {}
@@ -15,6 +17,14 @@ type merchantRepository struct {}
 func NewMerchantRepository() MerchantRepository {
 	return &merchantRepository{}
 }
+
+func (r *merchantRepository) Create(merchant *models.Merchant) error {
+	return database.DB.Create(merchant).Error
+} 
+
+func (r *merchantRepository) Update(merchant *models.Merchant, user_id uint) error {
+	return database.DB.Where("user_id = ?", user_id).Updates(merchant).Error
+} 
 
 func (r *merchantRepository) FindById(id uint) (*models.Merchant, error) {
 	var merchant models.Merchant
