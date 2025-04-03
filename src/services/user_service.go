@@ -15,6 +15,7 @@ import (
 type UserService interface {
 	Register(payload dto.AuthRequestRegisterDto) error
 	Login(payload dto.AuthRequestLoginDto) (string, error)
+	AddEmployee(payload dto.MerchantUserRequestDto) (*models.User, error)
 }
 
 type userService struct {
@@ -23,6 +24,27 @@ type userService struct {
 
 func NewUserService(repo repository.UserRepository) UserService {
 	return &userService{repo: repo}
+}
+
+func (s *userService) AddEmployee(payload dto.MerchantUserRequestDto) (*models.User, error) {
+	existingUser, err := s.repo.FindByEmail(payload.Email)
+	if err == nil && existingUser != nil {
+		return nil, errors.New("email already exists")
+	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(payload.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, err
+	}
+
+	user := &models.User{
+		Name:     payload.Name,
+		Email:    payload.Email,
+		Password: string(hashedPassword),
+		RoleID:   3,
+	}
+
+	return user, s.repo.Create(user)
 }
 
 func (s *userService) Register(payload dto.AuthRequestRegisterDto) error {

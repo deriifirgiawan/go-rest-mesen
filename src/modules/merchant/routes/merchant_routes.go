@@ -8,13 +8,15 @@ import (
 )
 
 func MerchantRoutes(router *gin.RouterGroup, app *containers.AppContainer) {
-	product := router.Group("/merchant")
+	merchant := router.Group("/merchant")
 
-	product.Use(middlewares.RoleProtectMiddleware(2))
+	merchant.Use(middlewares.RoleProtectMiddleware(2))
 
 	{
-		product.GET("/", app.MerchantController.GetMerchant)
-		product.POST("/", app.MerchantController.AddMerchant)
-		product.PUT("/", app.MerchantController.UpdateMerchant)
+		merchant.GET("/", app.MerchantController.GetMerchant)
+		merchant.POST("/", app.MerchantController.AddMerchant)
+		merchant.PUT("/", app.MerchantController.UpdateMerchant)
+		merchant.POST("/add-employee", app.MerchantController.AddEmployee)
+		merchant.GET("/employees", app.MerchantController.GetAllEmployee)
 	}
 }

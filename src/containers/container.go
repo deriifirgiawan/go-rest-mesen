@@ -48,7 +48,7 @@ func InitAppDependencies() *AppContainer {
 
 	merchantRepo := merchantRepo.NewMerchantRepository()
 	merchantService := merchantService.NewMerchantService(merchantRepo)
-	merchantController := merchant.NewMerchantController(merchantService)
+	merchantController := merchant.NewMerchantController(merchantService, userService)
 
 	transactionRepo := transactionRepo.NewTransactionRepository()
 	transactionService := transactinService.NewTransactionService(transactionRepo)

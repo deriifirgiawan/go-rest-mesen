@@ -18,6 +18,7 @@ func MigrateDB() {
 
 	createProductListView(DB)
 	createTransactionListView(DB)
+	createMerchantUserListView(DB)
 }
 
 func createProductListView(db *gorm.DB) {
@@ -68,5 +69,31 @@ func createTransactionListView(db *gorm.DB) {
 		log.Fatalf("Failed to create view: %v", err)
 	} else {
 		log.Println("View 'transaction_report' created successfully!")
+	}
+}
+
+func createMerchantUserListView(db *gorm.DB) {
+	log.Println("Create View Employee")
+
+	viewSQL := `
+		CREATE OR REPLACE VIEW merchant_user_list AS
+		SELECT 
+			u.id, 
+			u.name, 
+			u.email, 
+			u.created_at, 
+			u.updated_at, 
+			mu.merchant_id
+		FROM users u
+		JOIN merchant_users mu ON u.id = mu.user_id;
+	`
+
+	err := db.Exec(viewSQL).Error
+
+	if err != nil {
+		log.Fatalf("Failed to Create View: %v", err)
+	} else {
+
+		log.Println("View 'merchant_user_list' created successfully!")
 	}
 }
